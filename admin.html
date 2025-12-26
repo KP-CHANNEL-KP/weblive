@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Admin Goal Control</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body{
+  background:#000;
+  color:#fff;
+  font-family:Segoe UI,Roboto,sans-serif;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+}
+.box{
+  text-align:center;
+}
+button{
+  font-size:1.6rem;
+  padding:16px 32px;
+  margin:12px;
+  cursor:pointer;
+  font-weight:700;
+}
+</style>
+</head>
+
+<body>
+
+<div class="box">
+  <h2>Admin Goal Control</h2>
+  <button onclick="goal('home')">+1 Home Goal</button>
+  <button onclick="goal('away')">+1 Away Goal</button>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+import { getDatabase, ref, runTransaction } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyB45KjniqB3LqPmiadMzgNxyEjtHaZ9Jlg",
+  authDomain: "footballlive-79d2e.firebaseapp.com",
+  databaseURL: "https://footballlive-79d2e-default-rtdb.firebaseio.com",
+  projectId: "footballlive-79d2e",
+  storageBucket: "footballlive-79d2e.appspot.com",
+  messagingSenderId: "651283301496",
+  appId: "1:651283301496:web:fa20da633a83b54e71998d"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+window.goal = function(side){
+  runTransaction(ref(db, side+"_score"), (v)=>{
+    return (v || 0) + 1;
+  });
+}
+</script>
+
+</body>
+</html>
