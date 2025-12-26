@@ -56,13 +56,31 @@ body{
 
 /* MATCH INFO */
 .match-info{
-    background:var(--card);
+    background:linear-gradient(180deg,#161616,#0f0f0f);
     border-radius:10px;
     padding:12px;
     display:flex;
     justify-content:space-between;
     align-items:center;
     margin-bottom:10px;
+    position:relative;
+    overflow:hidden;
+    border:1px solid rgba(255,255,255,.05);
+    backdrop-filter:blur(10px);
+}
+.match-info::before{
+    content:"";
+    position:absolute;
+    left:0;
+    top:0;
+    width:100%;
+    height:2px;
+    background:linear-gradient(90deg,transparent,var(--primary),transparent);
+    animation:scan 3s linear infinite;
+}
+@keyframes scan{
+    from{transform:translateX(-100%)}
+    to{transform:translateX(100%)}
 }
 .team{
     text-align:center;
@@ -70,7 +88,7 @@ body{
     font-size:.9rem;
 }
 .score{
-    font-size:1.7rem;
+    font-size:1.8rem;
     font-weight:700;
 }
 
@@ -83,14 +101,25 @@ body{
 
 /* PLAYER */
 .player-card{
-    background:var(--card);
+    background:linear-gradient(180deg,#161616,#0f0f0f);
     border-radius:12px;
     overflow:hidden;
+    border:1px solid rgba(255,255,255,.05);
+    box-shadow:
+        0 20px 60px rgba(0,0,0,.8),
+        inset 0 0 0 1px rgba(255,255,255,.03);
 }
 .player{
     position:relative;
     padding-top:56.25%;
     background:#000;
+}
+.player::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:linear-gradient(to top,rgba(0,0,0,.6),transparent 40%);
+    pointer-events:none;
 }
 iframe{
     position:absolute;
@@ -98,13 +127,17 @@ iframe{
     width:100%;
     height:100%;
     border:none;
+    z-index:2;
 }
+
+/* LOADER */
 .loader{
     position:absolute;
     inset:0;
     display:flex;
     align-items:center;
     justify-content:center;
+    z-index:1;
 }
 .spinner{
     width:40px;
@@ -118,11 +151,12 @@ iframe{
 
 /* CHAT */
 .chat{
-    background:var(--card);
+    background:linear-gradient(180deg,#161616,#0f0f0f);
     border-radius:12px;
     display:flex;
     flex-direction:column;
-    height:100%;
+    border:1px solid rgba(255,255,255,.05);
+    backdrop-filter:blur(10px);
 }
 .chat-header{
     padding:10px;
@@ -136,11 +170,23 @@ iframe{
     font-size:.85rem;
 }
 .msg{
+    background:#0b0b0b;
+    padding:6px 10px;
+    border-radius:8px;
+    display:inline-block;
+    max-width:100%;
     margin-bottom:6px;
+    animation:pop .25s ease;
+}
+@keyframes pop{
+    from{transform:scale(.95);opacity:0}
+    to{transform:scale(1);opacity:1}
 }
 .msg span{
     color:var(--primary);
 }
+
+/* CHAT INPUT */
 .chat-input{
     display:flex;
     border-top:1px solid #222;
@@ -152,11 +198,20 @@ iframe{
     border:none;
     color:#fff;
 }
+.chat-input input:focus{
+    outline:none;
+    box-shadow:0 0 0 2px var(--primary);
+}
 .chat-input button{
     background:var(--primary);
     border:none;
     padding:0 15px;
     cursor:pointer;
+    transition:.2s;
+}
+.chat-input button:hover{
+    filter:brightness(1.1);
+    box-shadow:0 0 10px var(--primary);
 }
 
 /* FOOTER */
@@ -239,8 +294,11 @@ setInterval(()=>{
 
 /* CHAT */
 function send(){
-    const name=document.getElementById("name").value||"Guest";
-    const text=document.getElementById("text").value;
+    const nameInput=document.getElementById("name");
+    const textInput=document.getElementById("text");
+
+    const name=nameInput.value||"Guest";
+    const text=textInput.value.trim();
     if(!text) return;
 
     const msg=document.createElement("div");
@@ -251,8 +309,14 @@ function send(){
     box.appendChild(msg);
     box.scrollTop=box.scrollHeight;
 
-    document.getElementById("text").value="";
+    textInput.value="";
+    textInput.focus();
 }
+
+document.getElementById("text")
+.addEventListener("keypress",e=>{
+    if(e.key==="Enter") send();
+});
 </script>
 
 </body>
