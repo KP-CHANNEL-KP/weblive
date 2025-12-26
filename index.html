@@ -2,81 +2,70 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Live Score</title>
+<title>Live Football Score</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-
 body{
-    background:#000;
-    font-family:Segoe UI,Roboto,sans-serif;
-    color:#fff;
+  margin:0;
+  background:#000;
+  color:#fff;
+  font-family:Segoe UI,Roboto,sans-serif;
 }
-
 .score-bar{
-    width:100%;
-    padding:40px 20px;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    background:radial-gradient(circle,#111 0%,#000 70%);
-    border-bottom:1px solid rgba(255,255,255,.08);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:40px 20px;
+  background:radial-gradient(circle,#111 0%,#000 70%);
 }
-
 .team{
-    flex:1;
-    font-size:1.1rem;
-    opacity:.9;
+  flex:1;
+  font-size:1.2rem;
 }
-
-.team.left{
-    text-align:left;
-    padding-left:40px;
-}
-
-.team.right{
-    text-align:right;
-    padding-right:40px;
-}
-
 .score{
-    font-size:3.5rem;
-    font-weight:900;
-    letter-spacing:4px;
-    text-shadow:
-        0 0 10px #00ff88,
-        0 0 25px rgba(0,255,136,.7),
-        0 0 50px rgba(0,255,136,.4);
+  font-size:3.5rem;
+  font-weight:900;
+  text-align:center;
+  text-shadow:
+    0 0 10px #00ff88,
+    0 0 30px rgba(0,255,136,.6);
 }
 </style>
 </head>
 
 <body>
 
-<!-- SCORE BAR -->
 <div class="score-bar">
-    <div class="team left" id="home"></div>
-    <div class="score" id="score"></div>
-    <div class="team right" id="away"></div>
+  <div class="team" id="home"></div>
+  <div class="score" id="score"></div>
+  <div class="team" id="away" style="text-align:right"></div>
 </div>
 
-<script>
-async function loadScore(){
-    const res = await fetch("score.json?"+Date.now());
-    const data = await res.json();
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
 
-    document.getElementById("home").innerText = data.home_team;
-    document.getElementById("away").innerText = data.away_team;
-    document.getElementById("score").innerText =
-        data.home_score + " - " + data.away_score;
-}
+const firebaseConfig = {
+  apiKey: "AIzaSyB45KjniqB3LqPmiadMzgNxyEjtHaZ9Jlg",
+  authDomain: "footballlive-79d2e.firebaseapp.com",
+  databaseURL: "https://footballlive-79d2e-default-rtdb.firebaseio.com",
+  projectId: "footballlive-79d2e",
+  storageBucket: "footballlive-79d2e.appspot.com",
+  messagingSenderId: "651283301496",
+  appId: "1:651283301496:web:fa20da633a83b54e71998d"
+};
 
-/* load first time */
-loadScore();
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
 
-/* auto refresh every 5 seconds */
-setInterval(loadScore, 5000);
+onValue(ref(db, "/"), (snap)=>{
+  const d = snap.val();
+  document.getElementById("home").innerText = d.home_team;
+  document.getElementById("away").innerText = d.away_team;
+  document.getElementById("score").innerText =
+    d.home_score + " - " + d.away_score;
+});
 </script>
 
 </body>
