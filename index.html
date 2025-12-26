@@ -6,135 +6,177 @@
 <title>My Live Football • Pro Stream</title>
 
 <style>
-:root {
-    --primary: #00ff88;
-    --dark: #0b0b0b;
-    --card: #141414;
-    --text: #ffffff;
-    --muted: #9a9a9a;
+:root{
+    --primary:#00ff88;
+    --bg:#050505;
+    --card:#141414;
+    --muted:#9a9a9a;
 }
 
-* {
-    box-sizing: border-box;
+*{box-sizing:border-box;}
+
+body{
+    margin:0;
+    background:radial-gradient(circle at top,#111 0%,#000 60%);
+    color:#fff;
+    font-family:Segoe UI,Roboto,sans-serif;
+    display:flex;
+    justify-content:center;
 }
 
-body {
-    margin: 0;
-    font-family: "Segoe UI", Roboto, sans-serif;
-    background: radial-gradient(circle at top, #111 0%, #000 60%);
-    color: var(--text);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+.app{
+    width:100%;
+    max-width:1200px;
+    padding:12px;
 }
 
 /* HEADER */
-.header {
-    width: 100%;
-    max-width: 1000px;
-    padding: 15px 20px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+.header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:12px;
+}
+.logo{
+    font-weight:600;
+    letter-spacing:.5px;
+}
+.live-badge{
+    background:red;
+    padding:4px 12px;
+    font-size:.75rem;
+    border-radius:20px;
+    animation:pulse 1.5s infinite;
+}
+@keyframes pulse{
+    0%{box-shadow:0 0 0 0 rgba(255,0,0,.6)}
+    70%{box-shadow:0 0 0 12px rgba(255,0,0,0)}
+    100%{box-shadow:0 0 0 0 rgba(255,0,0,0)}
 }
 
-.logo {
-    font-size: 1.1rem;
-    font-weight: 600;
-    letter-spacing: 0.5px;
+/* MATCH INFO */
+.match-info{
+    background:var(--card);
+    border-radius:10px;
+    padding:12px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:10px;
+}
+.team{
+    text-align:center;
+    flex:1;
+    font-size:.9rem;
+}
+.score{
+    font-size:1.7rem;
+    font-weight:700;
 }
 
-.live-badge {
-    background: red;
-    color: #fff;
-    font-size: 0.75rem;
-    padding: 4px 10px;
-    border-radius: 20px;
-    animation: pulse 1.5s infinite;
+/* LAYOUT */
+.main{
+    display:grid;
+    grid-template-columns:3fr 1fr;
+    gap:10px;
 }
 
-@keyframes pulse {
-    0% { box-shadow: 0 0 0 0 rgba(255,0,0,.6); }
-    70% { box-shadow: 0 0 0 12px rgba(255,0,0,0); }
-    100% { box-shadow: 0 0 0 0 rgba(255,0,0,0); }
+/* PLAYER */
+.player-card{
+    background:var(--card);
+    border-radius:12px;
+    overflow:hidden;
 }
-
-/* PLAYER CARD */
-.player-card {
-    width: 100%;
-    max-width: 1000px;
-    background: var(--card);
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 0 40px rgba(0,0,0,.7);
+.player{
+    position:relative;
+    padding-top:56.25%;
+    background:#000;
 }
-
-/* ASPECT RATIO */
-.player-container {
-    position: relative;
-    width: 100%;
-    padding-top: 56.25%;
-    background: #000;
+iframe{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    border:none;
 }
-
-/* LOADING */
-.loader {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1;
+.loader{
+    position:absolute;
+    inset:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
 }
-
-.spinner {
-    width: 40px;
-    height: 40px;
-    border: 4px solid #333;
-    border-top: 4px solid var(--primary);
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
+.spinner{
+    width:40px;
+    height:40px;
+    border:4px solid #333;
+    border-top:4px solid var(--primary);
+    border-radius:50%;
+    animation:spin 1s linear infinite;
 }
+@keyframes spin{100%{transform:rotate(360deg)}}
 
-@keyframes spin {
-    100% { transform: rotate(360deg); }
+/* CHAT */
+.chat{
+    background:var(--card);
+    border-radius:12px;
+    display:flex;
+    flex-direction:column;
+    height:100%;
 }
-
-/* IFRAME */
-iframe {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    border: none;
-    z-index: 2;
+.chat-header{
+    padding:10px;
+    border-bottom:1px solid #222;
+    font-weight:600;
 }
-
-/* INFO */
-.info {
-    padding: 15px;
-    font-size: 0.85rem;
-    color: var(--muted);
-    text-align: center;
+.chat-messages{
+    flex:1;
+    padding:10px;
+    overflow-y:auto;
+    font-size:.85rem;
+}
+.msg{
+    margin-bottom:6px;
+}
+.msg span{
+    color:var(--primary);
+}
+.chat-input{
+    display:flex;
+    border-top:1px solid #222;
+}
+.chat-input input{
+    flex:1;
+    padding:10px;
+    background:#000;
+    border:none;
+    color:#fff;
+}
+.chat-input button{
+    background:var(--primary);
+    border:none;
+    padding:0 15px;
+    cursor:pointer;
 }
 
 /* FOOTER */
-.footer {
-    margin: 15px 0 25px;
-    font-size: 0.75rem;
-    color: #666;
+.footer{
+    text-align:center;
+    margin:15px 0;
+    font-size:.75rem;
+    color:#666;
 }
 
 /* MOBILE */
-@media (max-width: 600px) {
-    .logo {
-        font-size: 1rem;
-    }
+@media(max-width:900px){
+    .main{grid-template-columns:1fr;}
 }
 </style>
 </head>
 
 <body>
+
+<div class="app">
 
 <!-- HEADER -->
 <div class="header">
@@ -142,30 +184,76 @@ iframe {
     <div class="live-badge">LIVE</div>
 </div>
 
+<!-- MATCH INFO -->
+<div class="match-info">
+    <div class="team">Manchester United</div>
+    <div class="score" id="score">1 - 0</div>
+    <div class="team">Real Madrid</div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
 <!-- PLAYER -->
 <div class="player-card">
-    <div class="player-container">
+    <div class="player">
         <div class="loader">
             <div class="spinner"></div>
         </div>
-
         <iframe
-            src="https://customer-ppf6qmy9ko98j8pv.cloudflarestream.com/bd36d5e2aae0b4f0da8289d0a27169d2/iframe?preload=true&autoplay=true"
-            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+            src="https://customer-ppf6qmy9ko98j8pv.cloudflarestream.com/bd36d5e2aae0b4f0da8289d0a27169d2/iframe?autoplay=true"
             allowfullscreen
             onload="this.previousElementSibling.style.display='none'">
         </iframe>
     </div>
+</div>
 
-    <div class="info">
-        Live မပေါ်ပါက Browser ကို <b>Refresh</b> လုပ်ပေးပါ။
+<!-- CHAT -->
+<div class="chat">
+    <div class="chat-header">💬 Live Chat</div>
+    <div class="chat-messages" id="messages"></div>
+    <div class="chat-input">
+        <input id="name" placeholder="Name">
+        <input id="text" placeholder="Message">
+        <button onclick="send()">Send</button>
     </div>
 </div>
 
-<!-- FOOTER -->
+</div>
+
 <div class="footer">
     © 2025 My Live Football • All Rights Reserved
 </div>
+
+</div>
+
+<script>
+/* DEMO SCORE */
+let home=1,away=0;
+setInterval(()=>{
+    if(Math.random()>0.75){
+        home++;
+        document.getElementById("score").innerText=`${home} - ${away}`;
+    }
+},20000);
+
+/* CHAT */
+function send(){
+    const name=document.getElementById("name").value||"Guest";
+    const text=document.getElementById("text").value;
+    if(!text) return;
+
+    const msg=document.createElement("div");
+    msg.className="msg";
+    msg.innerHTML=`<span>${name}:</span> ${text}`;
+
+    const box=document.getElementById("messages");
+    box.appendChild(msg);
+    box.scrollTop=box.scrollHeight;
+
+    document.getElementById("text").value="";
+}
+</script>
 
 </body>
 </html>
