@@ -2,19 +2,20 @@
 <html lang="my">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Football Live</title>
-    <style>
-        body { background-color: #000; color: white; text-align: center; font-family: sans-serif; padding-top: 50px; }
-        .video-box { width: 90%; max-width: 900px; margin: auto; border: 5px solid #222; }
-    </style>
 </head>
-<body>
+<body style="background-color: #000; color: white; text-align: center; margin: 0; padding-top: 50px;">
     <h1>တိုက်ရိုက်ထုတ်လွှင့်မှု</h1>
-    <div class="video-box">
-        <stream src="bd36d5e2aae0b4f0da8289d0a27169d2" controls autoplay></stream>
-        <script src="https://embed.videodelivery.net/embed/sdk.latest.js"></script>
+    
+    <div style="position: relative; padding-top: 56.25%; max-width: 900px; margin: auto;">
+        <iframe
+            src="https://customer-ppf6qmy9ko98j8pv.cloudflarestream.com/bd36d5e2aae0b4f0da8289d0a27169d2/iframe"
+            style="border: none; position: absolute; top: 0; left: 0; height: 100%; width: 100%;"
+            allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;"
+            allowfullscreen="true">
+        </iframe>
     </div>
+    
     <p>Live မတက်ပါက Browser ကို Refresh လုပ်ပေးပါ။</p>
 </body>
 </html>
