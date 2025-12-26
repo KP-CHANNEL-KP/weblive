@@ -3,21 +3,20 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>My Live Football • Pro Stream</title>
+<title>My Live Football • Ultra Pro</title>
 
 <style>
 :root{
     --primary:#00ff88;
-    --bg:#050505;
-    --card:#141414;
-    --muted:#9a9a9a;
+    --bg:#000;
+    --card:#0f0f0f;
 }
 
 *{box-sizing:border-box;}
 
 body{
     margin:0;
-    background:radial-gradient(circle at top,#111 0%,#000 60%);
+    background:radial-gradient(circle at top,#111 0%,#000 70%);
     color:#fff;
     font-family:Segoe UI,Roboto,sans-serif;
     display:flex;
@@ -26,8 +25,8 @@ body{
 
 .app{
     width:100%;
-    max-width:1200px;
-    padding:12px;
+    max-width:1400px;
+    padding:16px;
 }
 
 /* HEADER */
@@ -35,47 +34,44 @@ body{
     display:flex;
     justify-content:space-between;
     align-items:center;
-    margin-bottom:12px;
+    margin-bottom:16px;
 }
 .logo{
-    font-weight:600;
-    letter-spacing:.5px;
+    font-size:1.2rem;
+    font-weight:700;
 }
-.live-badge{
+.live{
     background:red;
-    padding:4px 12px;
-    font-size:.75rem;
+    padding:6px 14px;
     border-radius:20px;
-    animation:pulse 1.5s infinite;
+    font-size:.8rem;
+    animation:pulse 1.2s infinite;
 }
 @keyframes pulse{
-    0%{box-shadow:0 0 0 0 rgba(255,0,0,.6)}
-    70%{box-shadow:0 0 0 12px rgba(255,0,0,0)}
+    0%{box-shadow:0 0 0 0 rgba(255,0,0,.7)}
+    70%{box-shadow:0 0 0 14px rgba(255,0,0,0)}
     100%{box-shadow:0 0 0 0 rgba(255,0,0,0)}
 }
 
-/* MATCH INFO */
-.match-info{
-    background:linear-gradient(180deg,#161616,#0f0f0f);
-    border-radius:10px;
-    padding:12px;
+/* SCORE BAR */
+.score-bar{
+    background:linear-gradient(180deg,#111,#070707);
+    border-radius:14px;
+    padding:20px;
     display:flex;
-    justify-content:space-between;
     align-items:center;
-    margin-bottom:10px;
+    justify-content:space-between;
+    margin-bottom:16px;
     position:relative;
-    overflow:hidden;
-    border:1px solid rgba(255,255,255,.05);
-    backdrop-filter:blur(10px);
+    border:1px solid rgba(255,255,255,.06);
 }
-.match-info::before{
+.score-bar::before{
     content:"";
     position:absolute;
-    left:0;
-    top:0;
-    width:100%;
-    height:2px;
+    inset:0;
+    border-radius:14px;
     background:linear-gradient(90deg,transparent,var(--primary),transparent);
+    height:2px;
     animation:scan 3s linear infinite;
 }
 @keyframes scan{
@@ -83,36 +79,61 @@ body{
     to{transform:translateX(100%)}
 }
 .team{
-    text-align:center;
     flex:1;
-    font-size:.9rem;
+    text-align:center;
+    font-size:1rem;
 }
 .score{
-    font-size:1.8rem;
-    font-weight:700;
+    font-size:3rem;
+    font-weight:900;
+    color:#fff;
+    text-shadow:
+        0 0 15px var(--primary),
+        0 0 40px rgba(0,255,136,.6);
+    animation:scorePulse 1.4s infinite;
+}
+@keyframes scorePulse{
+    0%{transform:scale(1)}
+    50%{transform:scale(1.07)}
+    100%{transform:scale(1)}
 }
 
 /* LAYOUT */
 .main{
     display:grid;
-    grid-template-columns:3fr 1fr;
-    gap:10px;
+    grid-template-columns:3fr 1.2fr;
+    gap:16px;
 }
 
 /* PLAYER */
 .player-card{
-    background:linear-gradient(180deg,#161616,#0f0f0f);
-    border-radius:12px;
+    position:relative;
+    background:#000;
+    border-radius:16px;
     overflow:hidden;
-    border:1px solid rgba(255,255,255,.05);
-    box-shadow:
-        0 20px 60px rgba(0,0,0,.8),
-        inset 0 0 0 1px rgba(255,255,255,.03);
+    box-shadow:0 30px 80px rgba(0,0,0,.9);
+}
+.player-card::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    border-radius:16px;
+    padding:2px;
+    background:linear-gradient(120deg,transparent,var(--primary),transparent);
+    mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    mask-composite:exclude;
+    animation:borderMove 3s linear infinite;
+    pointer-events:none;
+}
+@keyframes borderMove{
+    from{background-position:0%}
+    to{background-position:200%}
 }
 .player{
     position:relative;
     padding-top:56.25%;
-    background:#000;
 }
 .player::after{
     content:"";
@@ -130,52 +151,30 @@ iframe{
     z-index:2;
 }
 
-/* LOADER */
-.loader{
-    position:absolute;
-    inset:0;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    z-index:1;
-}
-.spinner{
-    width:40px;
-    height:40px;
-    border:4px solid #333;
-    border-top:4px solid var(--primary);
-    border-radius:50%;
-    animation:spin 1s linear infinite;
-}
-@keyframes spin{100%{transform:rotate(360deg)}}
-
 /* CHAT */
 .chat{
-    background:linear-gradient(180deg,#161616,#0f0f0f);
-    border-radius:12px;
+    background:linear-gradient(180deg,#111,#070707);
+    border-radius:16px;
     display:flex;
     flex-direction:column;
-    border:1px solid rgba(255,255,255,.05);
-    backdrop-filter:blur(10px);
+    border:1px solid rgba(255,255,255,.06);
 }
 .chat-header{
-    padding:10px;
+    padding:14px;
+    font-weight:700;
     border-bottom:1px solid #222;
-    font-weight:600;
 }
 .chat-messages{
     flex:1;
-    padding:10px;
+    padding:12px;
     overflow-y:auto;
-    font-size:.85rem;
+    font-size:.9rem;
 }
 .msg{
-    background:#0b0b0b;
-    padding:6px 10px;
-    border-radius:8px;
-    display:inline-block;
-    max-width:100%;
-    margin-bottom:6px;
+    background:#000;
+    padding:8px 12px;
+    border-radius:10px;
+    margin-bottom:8px;
     animation:pop .25s ease;
 }
 @keyframes pop{
@@ -184,16 +183,15 @@ iframe{
 }
 .msg span{
     color:var(--primary);
+    font-weight:600;
 }
-
-/* CHAT INPUT */
 .chat-input{
     display:flex;
     border-top:1px solid #222;
 }
 .chat-input input{
     flex:1;
-    padding:10px;
+    padding:12px;
     background:#000;
     border:none;
     color:#fff;
@@ -205,26 +203,27 @@ iframe{
 .chat-input button{
     background:var(--primary);
     border:none;
-    padding:0 15px;
+    padding:0 20px;
+    font-weight:700;
     cursor:pointer;
     transition:.2s;
 }
 .chat-input button:hover{
-    filter:brightness(1.1);
-    box-shadow:0 0 10px var(--primary);
+    box-shadow:0 0 15px var(--primary);
 }
 
 /* FOOTER */
 .footer{
     text-align:center;
-    margin:15px 0;
+    margin-top:18px;
     font-size:.75rem;
     color:#666;
 }
 
 /* MOBILE */
-@media(max-width:900px){
+@media(max-width:1000px){
     .main{grid-template-columns:1fr;}
+    .score{font-size:2.4rem;}
 }
 </style>
 </head>
@@ -236,13 +235,13 @@ iframe{
 <!-- HEADER -->
 <div class="header">
     <div class="logo">⚽ My Live Football</div>
-    <div class="live-badge">LIVE</div>
+    <div class="live">LIVE</div>
 </div>
 
-<!-- MATCH INFO -->
-<div class="match-info">
+<!-- SCORE -->
+<div class="score-bar">
     <div class="team">Manchester United</div>
-    <div class="score" id="score">1 - 0</div>
+    <div class="score" id="score">6 - 0</div>
     <div class="team">Real Madrid</div>
 </div>
 
@@ -252,13 +251,9 @@ iframe{
 <!-- PLAYER -->
 <div class="player-card">
     <div class="player">
-        <div class="loader">
-            <div class="spinner"></div>
-        </div>
         <iframe
             src="https://customer-ppf6qmy9ko98j8pv.cloudflarestream.com/bd36d5e2aae0b4f0da8289d0a27169d2/iframe?autoplay=true"
-            allowfullscreen
-            onload="this.previousElementSibling.style.display='none'">
+            allowfullscreen>
         </iframe>
     </div>
 </div>
@@ -283,34 +278,35 @@ iframe{
 </div>
 
 <script>
-/* DEMO SCORE */
-let home=1,away=0;
+/* SYSTEM MESSAGE */
+const box=document.getElementById("messages");
+const sys=document.createElement("div");
+sys.className="msg";
+sys.innerHTML="<span>System:</span> Live chat started 🔥";
+box.appendChild(sys);
+
+/* DEMO SCORE CHANGE */
+let h=6,a=0;
 setInterval(()=>{
-    if(Math.random()>0.75){
-        home++;
-        document.getElementById("score").innerText=`${home} - ${away}`;
+    if(Math.random()>0.8){
+        h++;
+        document.getElementById("score").innerText=`${h} - ${a}`;
     }
-},20000);
+},25000);
 
 /* CHAT */
 function send(){
-    const nameInput=document.getElementById("name");
-    const textInput=document.getElementById("text");
+    const n=document.getElementById("name").value||"Guest";
+    const t=document.getElementById("text").value.trim();
+    if(!t) return;
 
-    const name=nameInput.value||"Guest";
-    const text=textInput.value.trim();
-    if(!text) return;
+    const m=document.createElement("div");
+    m.className="msg";
+    m.innerHTML=`<span>${n}:</span> ${t}`;
 
-    const msg=document.createElement("div");
-    msg.className="msg";
-    msg.innerHTML=`<span>${name}:</span> ${text}`;
-
-    const box=document.getElementById("messages");
-    box.appendChild(msg);
+    box.appendChild(m);
     box.scrollTop=box.scrollHeight;
-
-    textInput.value="";
-    textInput.focus();
+    document.getElementById("text").value="";
 }
 
 document.getElementById("text")
