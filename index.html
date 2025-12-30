@@ -34,7 +34,7 @@ body{
     to{background-position:100% 100%}
 }
 
-/* ================= HEADER ================= */
+/* HEADER */
 .header{
     width:100%;
     max-width:1100px;
@@ -60,15 +60,9 @@ body{
     padding:6px 16px;
     border-radius:20px;
     font-size:.75rem;
-    animation:pulse 1.5s infinite;
-}
-@keyframes pulse{
-    0%{box-shadow:0 0 0 0 rgba(255,0,0,.6)}
-    70%{box-shadow:0 0 0 12px rgba(255,0,0,0)}
-    100%{box-shadow:0 0 0 0 rgba(255,0,0,0)}
 }
 
-/* ================= PLAYER ================= */
+/* PLAYER */
 .player-card{
     width:100%;
     max-width:1100px;
@@ -81,7 +75,7 @@ body{
     padding-top:56.25%;
 }
 
-/* ================= PLACEHOLDER ================= */
+/* PLACEHOLDER */
 .placeholder{
     position:absolute;
     inset:0;
@@ -105,8 +99,6 @@ body{
     letter-spacing:2px;
     margin:8px 0;
 }
-
-/* MATCH */
 .match{
     display:flex;
     align-items:center;
@@ -123,8 +115,19 @@ body{
     color:var(--primary);
     font-size:.9rem;
 }
+.watch-btn{
+    margin-top:18px;
+    padding:10px 28px;
+    border:none;
+    border-radius:22px;
+    background:var(--primary);
+    color:#000;
+    font-weight:700;
+    cursor:pointer;
+    display:none;
+}
 
-/* ================= IFRAME ================= */
+/* IFRAME */
 iframe{
     position:absolute;
     inset:0;
@@ -134,7 +137,7 @@ iframe{
     display:none;
 }
 
-/* ================= SOCIAL ================= */
+/* SOCIAL */
 .socials{
     margin:18px 0 8px;
     display:flex;
@@ -153,7 +156,6 @@ iframe{
     border:1px solid #222;
 }
 
-/* ================= FOOTER ================= */
 .footer{
     margin:20px 0 25px;
     font-size:.75rem;
@@ -161,12 +163,12 @@ iframe{
     text-align:center;
 }
 
-/* ================= MOBILE ================= */
+/* MOBILE */
 @media(max-width:768px){
     .header{padding:12px 14px}
     .logo span{font-size:1rem}
     .timer{font-size:2rem}
-    .match{font-size:.95rem;gap:10px}
+    .match{font-size:.95rem;gap:10px;flex-wrap:wrap;justify-content:center}
 }
 </style>
 </head>
@@ -197,9 +199,17 @@ iframe{
                 <span>Wolves</span>
                 <img src="team2.png">
             </div>
+
+            <button class="watch-btn" id="watchBtn">Watch Live</button>
         </div>
 
-        <iframe id="liveFrame" allow="autoplay; fullscreen"></iframe>
+        <iframe
+            id="liveFrame"
+            preload="none"
+            allow="fullscreen; autoplay"
+            playsinline>
+        </iframe>
+
     </div>
 </div>
 
@@ -215,26 +225,45 @@ iframe{
 </div>
 
 <script>
+/* ===== CONFIG ===== */
 const LIVE_TIME = new Date("2025-12-30 23:14:00").getTime();
-const STREAM_URL = "https://customer-ppf6qmy9ko98j8pv.cloudflarestream.com/bd36d5e2aae0b4f0da8289d0a27169d2/iframe?autoplay=true";
+const STREAM_URL = "https://customer-ppf6qmy9ko98j8pv.cloudflarestream.com/bd36d5e2aae0b4f0da8289d0a27169d2/iframe";
 
-const timer = document.getElementById("timer");
+/* ===== ELEMENTS ===== */
+const timerEl = document.getElementById("timer");
+const watchBtn = document.getElementById("watchBtn");
+const iframe = document.getElementById("liveFrame");
+const placeholder = document.getElementById("placeholder");
 
+let liveReady = false;
+
+/* ===== COUNTDOWN ===== */
 setInterval(()=>{
     const diff = LIVE_TIME - Date.now();
+
     if(diff <= 0){
-        timer.textContent = "LIVE";
-        document.getElementById("liveFrame").src = STREAM_URL;
-        document.getElementById("liveFrame").style.display = "block";
-        document.getElementById("placeholder").style.display = "none";
+        timerEl.textContent = "LIVE";
+        if(!liveReady){
+            liveReady = true;
+            watchBtn.style.display = "inline-block"; // 👈 button only
+        }
         return;
     }
+
     const h = Math.floor(diff/3600000);
     const m = Math.floor(diff%3600000/60000);
     const s = Math.floor(diff%60000/1000);
-    timer.textContent =
+
+    timerEl.textContent =
       `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
 },1000);
+
+/* ===== USER CLICK ONLY ===== */
+watchBtn.onclick = ()=>{
+    iframe.src = STREAM_URL;     // ✅ set ONCE
+    iframe.style.display = "block";
+    placeholder.style.display = "none";
+};
 </script>
 
 </body>
