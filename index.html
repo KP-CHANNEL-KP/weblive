@@ -14,6 +14,8 @@
     --muted:#aaa;
 }
 
+*{box-sizing:border-box}
+
 body{
     margin:0;
     background:radial-gradient(circle at top,#111 0%,#000 60%);
@@ -91,7 +93,7 @@ body{
 .placeholder p{
     font-size:.85rem;
     color:var(--muted);
-    margin:12px 0 18px;
+    margin:8px 0;
 }
 .placeholder button{
     display:none;
@@ -102,6 +104,20 @@ body{
     color:#000;
     font-weight:600;
     cursor:pointer;
+}
+
+/* MATCH TEAMS */
+.match{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    margin:14px 0 6px;
+    font-size:1.05rem;
+    font-weight:600;
+}
+.match .vs{
+    color:var(--primary);
+    font-size:.9rem;
 }
 
 /* IFRAME */
@@ -146,8 +162,8 @@ iframe{
 <!-- HEADER -->
 <div class="header">
     <div class="logo">
-        <img src="logo.png">
-        <span>My Live Football</span>
+        <img src="logo.png" alt="Logo">
+        <span>KP Live Football</span>
     </div>
     <div class="live">LIVE</div>
 </div>
@@ -160,9 +176,16 @@ iframe{
         <div class="placeholder" id="placeholder">
             <i class="fa-solid fa-tv"></i>
             <h2>Live Stream စတင်မည့်အချိန်</h2>
+
             <div class="timer" id="timer">--:--:--</div>
-            <p>ပြသမည့်ပွဲ စဉ်</p>
-            <p>Man United Vs Wolves</p>
+
+            <!-- MATCH TEAMS -->
+            <div class="match">
+                <span id="homeTeam"></span>
+                <span class="vs">VS</span>
+                <span id="awayTeam"></span>
+            </div>
+
             <button id="watchBtn" onclick="startLive()">Watch Live</button>
         </div>
 
@@ -179,19 +202,27 @@ iframe{
 <div class="socials">
     <a href="https://t.me/KP_CHANNEL_KP" target="_blank"><i class="fa-brands fa-telegram"></i></a>
     <a href="https://www.facebook.com/share/1CmNvtjsp8/" target="_blank"><i class="fa-brands fa-facebook-f"></i></a>
-    <a href="https://youtube.com/@kpchannel22?si=oHInyieqyy2BBDlP" target="_blank"><i class="fa-brands fa-youtube"></i></a>
+    <a href="https://youtube.com/@kpchannel22" target="_blank"><i class="fa-brands fa-youtube"></i></a>
 </div>
 
 <div class="footer">
-    © 2025 My Live Football
+    © 2025 KP Live Football • All Rights Reserved
 </div>
 
 <script>
 /* =========================
-   🔴 SET LIVE START TIME
-   Format: YYYY-MM-DD HH:MM:SS
+   🔴 LIVE START TIME
    ========================= */
 const liveStartTime = new Date("2025-12-31 02:45:00").getTime();
+
+/* =========================
+   🔵 TEAM NAMES (EDIT HERE)
+   ========================= */
+const HOME_TEAM = "Manchester United";
+const AWAY_TEAM = "Wolves";
+
+document.getElementById("homeTeam").textContent = HOME_TEAM;
+document.getElementById("awayTeam").textContent = AWAY_TEAM;
 
 const timerEl = document.getElementById("timer");
 const watchBtn = document.getElementById("watchBtn");
