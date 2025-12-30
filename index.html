@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>My Live Football</title>
 
-<!-- Font Awesome Icons -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
 
 <style>
@@ -14,8 +13,6 @@
     --card:#111;
     --muted:#aaa;
 }
-
-*{box-sizing:border-box}
 
 body{
     margin:0;
@@ -36,7 +33,6 @@ body{
     justify-content:space-between;
     align-items:center;
 }
-
 .logo{
     display:flex;
     align-items:center;
@@ -44,50 +40,81 @@ body{
     font-size:1.2rem;
     font-weight:700;
 }
-
 .logo img{
     width:36px;
     height:36px;
-    object-fit:contain;
     border-radius:50%;
 }
-
 .live{
     background:red;
     padding:6px 16px;
     border-radius:20px;
     font-size:.75rem;
-    animation:pulse 1.5s infinite;
-}
-@keyframes pulse{
-    0%{box-shadow:0 0 0 0 rgba(255,0,0,.7)}
-    70%{box-shadow:0 0 0 14px rgba(255,0,0,0)}
-    100%{box-shadow:0 0 0 0 rgba(255,0,0,0)}
 }
 
 /* PLAYER */
 .player-card{
     width:100%;
     max-width:1100px;
-    background:linear-gradient(180deg,#111,#000);
+    background:#000;
     border-radius:14px;
     overflow:hidden;
-    box-shadow:0 0 40px rgba(0,0,0,.7);
 }
 .player{
     position:relative;
     padding-top:56.25%;
-    background:#000;
 }
+
+/* PLACEHOLDER */
+.placeholder{
+    position:absolute;
+    inset:0;
+    background:linear-gradient(180deg,#111,#000);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    z-index:2;
+}
+.placeholder i{
+    font-size:3rem;
+    color:var(--primary);
+    margin-bottom:15px;
+}
+.timer{
+    font-size:2.6rem;
+    font-weight:800;
+    letter-spacing:2px;
+    color:var(--primary);
+}
+.placeholder p{
+    font-size:.85rem;
+    color:var(--muted);
+    margin:12px 0 18px;
+}
+.placeholder button{
+    display:none;
+    padding:10px 26px;
+    border:none;
+    border-radius:20px;
+    background:var(--primary);
+    color:#000;
+    font-weight:600;
+    cursor:pointer;
+}
+
+/* IFRAME */
 iframe{
     position:absolute;
     inset:0;
     width:100%;
     height:100%;
     border:none;
+    display:none;
 }
 
-/* SOCIAL ICONS */
+/* SOCIAL */
 .socials{
     margin:18px 0 8px;
     display:flex;
@@ -104,31 +131,12 @@ iframe{
     color:#fff;
     font-size:1.25rem;
     border:1px solid #222;
-    transition:.25s;
-}
-.socials a:hover{
-    background:var(--primary);
-    color:#000;
-    transform:translateY(-3px);
 }
 
-/* INFO */
-.info{
-    margin:8px 0;
-    font-size:.85rem;
-    color:var(--muted);
-}
-
-/* FOOTER */
 .footer{
     margin:20px 0 25px;
     font-size:.75rem;
     color:#666;
-}
-
-/* MOBILE */
-@media(max-width:600px){
-    .logo{font-size:1rem}
 }
 </style>
 </head>
@@ -138,7 +146,7 @@ iframe{
 <!-- HEADER -->
 <div class="header">
     <div class="logo">
-        <img src="logo.png" alt="Logo">
+        <img src="logo.png">
         <span>My Live Football</span>
     </div>
     <div class="live">LIVE</div>
@@ -147,34 +155,71 @@ iframe{
 <!-- PLAYER -->
 <div class="player-card">
     <div class="player">
-        <iframe
-            src="https://customer-ppf6qmy9ko98j8pv.cloudflarestream.com/bd36d5e2aae0b4f0da8289d0a27169d2/iframe?autoplay=true"
+
+        <!-- PLACEHOLDER -->
+        <div class="placeholder" id="placeholder">
+            <i class="fa-solid fa-tv"></i>
+            <h2>Live Stream စတင်မည့်အချိန်</h2>
+            <div class="timer" id="timer">--:--:--</div>
+            <p>သတ်မှတ်ထားသော အချိန်ရောက်ပါက Live စတင်ပါမည်</p>
+            <button id="watchBtn" onclick="startLive()">Watch Live</button>
+        </div>
+
+        <!-- IFRAME -->
+        <iframe id="liveFrame"
             allow="autoplay; fullscreen"
             allowfullscreen>
         </iframe>
+
     </div>
 </div>
 
-<!-- SOCIAL ICON LINKS -->
+<!-- SOCIAL ICONS -->
 <div class="socials">
-    <a href="https://t.me/KP_CHANNEL_KP" target="_blank" title="Telegram">
-        <i class="fa-brands fa-telegram"></i>
-    </a>
-    <a href="https://www.facebook.com/share/1CmNvtjsp8/" target="_blank" title="Facebook">
-        <i class="fa-brands fa-facebook-f"></i>
-    </a>
-    <a href="https://youtube.com/@kpchannel22?si=oHInyieqyy2BBDlP" target="_blank" title="YouTube">
-        <i class="fa-brands fa-youtube"></i>
-    </a>
-</div>
-
-<div class="info">
-    Live မပေါ်ပါက Browser ကို Refresh လုပ်ပါ။
+    <a href="https://t.me/yourchannel" target="_blank"><i class="fa-brands fa-telegram"></i></a>
+    <a href="https://facebook.com/yourpage" target="_blank"><i class="fa-brands fa-facebook-f"></i></a>
+    <a href="https://youtube.com/@yourchannel" target="_blank"><i class="fa-brands fa-youtube"></i></a>
 </div>
 
 <div class="footer">
-    © 2025 My Live Football • All Rights Reserved
+    © 2025 My Live Football
 </div>
+
+<script>
+/* =========================
+   🔴 SET LIVE START TIME
+   Format: YYYY-MM-DD HH:MM:SS
+   ========================= */
+const liveStartTime = new Date("2025-01-05 20:00:00").getTime();
+
+const timerEl = document.getElementById("timer");
+const watchBtn = document.getElementById("watchBtn");
+
+setInterval(() => {
+    const now = new Date().getTime();
+    const diff = liveStartTime - now;
+
+    if(diff <= 0){
+        timerEl.textContent = "LIVE";
+        watchBtn.style.display = "inline-block";
+        return;
+    }
+
+    const h = Math.floor(diff / (1000 * 60 * 60));
+    const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const s = Math.floor((diff % (1000 * 60)) / 1000);
+
+    timerEl.textContent =
+        `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+}, 1000);
+
+function startLive(){
+    const iframe = document.getElementById("liveFrame");
+    iframe.src = "https://customer-ppf6qmy9ko98j8pv.cloudflarestream.com/bd36d5e2aae0b4f0da8289d0a27169d2/iframe?autoplay=true";
+    iframe.style.display = "block";
+    document.getElementById("placeholder").style.display = "none";
+}
+</script>
 
 </body>
 </html>
